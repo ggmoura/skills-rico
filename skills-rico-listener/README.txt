@@ -1,0 +1,1 @@
+link ctrc C javascripot: https://www.lucidchart.com/techblog/2014/12/02/definitive-guide-copying-pasting-javascript/
