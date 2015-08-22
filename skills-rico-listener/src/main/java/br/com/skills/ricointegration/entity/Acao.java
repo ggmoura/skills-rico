@@ -18,7 +18,6 @@ public class Acao extends SkillsEntity<Long> {
 	private String code;
 	private String name;
 	
-	
 	private List<AcaoCorretora> acoes;
 
 	public Long getId() {
