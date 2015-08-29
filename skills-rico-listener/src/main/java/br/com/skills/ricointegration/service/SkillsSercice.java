@@ -2,8 +2,8 @@ package br.com.skills.ricointegration.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,6 +11,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import br.com.skills.ricointegration.entity.Acao;
+import br.com.skills.ricointegration.entity.AcaoCorretora;
+import br.com.skills.ricointegration.entity.Corretora;
+import br.com.skills.ricointegration.entity.PrecoMedio;
+import br.com.skills.ricointegration.vo.AcaoVO;
+import br.com.skills.ricointegration.vo.CorretoraVO;
 import br.com.skills.ricointegration.vo.Entrie;
 import br.com.skills.ricointegration.vo.Resume;
 
@@ -18,7 +24,75 @@ import br.com.skills.ricointegration.vo.Resume;
 public class SkillsSercice {
 
 	
-	private EntityManager manager;
+	//@PersistenceUnit(unitName = "test")
+	//private EntityManager manager;
+	
+	
+	@GET
+	@Path("/acoes")
+	@Produces("application/json")
+	public AcaoVO getAcoes() {
+		
+		AcaoVO acao = new AcaoVO();
+		
+		acao.setP("ABCB4");
+		acao.setUt(new Date());
+		acao.setC(new ArrayList<CorretoraVO>());
+		CorretoraVO corretora = null;
+		for (int i = 0; i < 10; i++) {
+			corretora = new CorretoraVO();
+			corretora.setId("000000"+ i);
+			corretora.setNome("Corretora " + (i + 1));
+			corretora.setAbp(Double.valueOf((i + 1) * i));
+			corretora.setAsp(Double.valueOf((i + 1) * i + 1));
+			acao.getC().add(corretora);
+		}
+		
+		return acao;
+		
+	}
+	
+	@GET
+	@Path("/corretoras")
+	@Produces("application/json")
+	public Corretora getCorretora() {
+		
+		Corretora c = new Corretora();
+		c.setCodigo("00000001");
+		c.setId(1L);
+		c.setNome("Corretora");
+		
+		Acao a = new Acao();
+		a.setCode("Cod Acao");
+		a.setId(2L);
+		a.setName("Acao");
+		
+		List<AcaoCorretora> acoesCorretoras = new ArrayList<>();
+		AcaoCorretora acaoCorretora = new AcaoCorretora();
+		acaoCorretora.setId(3L);
+		acaoCorretora.setAcao(a);
+		a.setAcoes(acoesCorretoras);
+		//acaoCorretora.setCorretora(c);
+		
+		acoesCorretoras.add(acaoCorretora);
+		
+		c.setAcoes(acoesCorretoras);
+		
+		List<PrecoMedio> precosMedios = new ArrayList<>();
+		PrecoMedio precoMedio = new PrecoMedio();
+		precoMedio.setId(4L);
+		precoMedio.setCompra(10D);
+		precoMedio.setVenda(11D);
+		
+		precosMedios.add(precoMedio);
+		
+		acaoCorretora.setPrecosMedios(precosMedios);
+		
+		//a.setAcoes(acoesCorretoras);
+		
+		return c;
+		
+	}
 	
 	@GET
 	@Path("/get")

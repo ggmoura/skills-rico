@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Acao extends SkillsEntity<Long> {
@@ -18,6 +19,7 @@ public class Acao extends SkillsEntity<Long> {
 	private String code;
 	private String name;
 	
+	@OneToMany(mappedBy="acao")
 	private List<AcaoCorretora> acoes;
 
 	public Long getId() {
