@@ -7,7 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Acao extends SkillsEntity<Long> {
 
 	private static final long serialVersionUID = 1L;
@@ -18,6 +24,7 @@ public class Acao extends SkillsEntity<Long> {
 	private String code;
 	private String name;
 	
+	@JsonManagedReference
 	private List<AcaoCorretora> acoes;
 
 	public Long getId() {

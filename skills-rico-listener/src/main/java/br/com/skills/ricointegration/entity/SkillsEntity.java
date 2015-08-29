@@ -2,13 +2,25 @@ package br.com.skills.ricointegration.entity;
 
 import java.io.Serializable;
 
+/**
+ * Entidade base para classes da camada de modelo, provem
+ * 
+ * <code>equals(Object other)</code>
+ * <code>hashcode()</code>
+ * <code>toString()</code>
+ * 
+ * @author Gleidson Moura
+ * @email gleidosn.gmoura@gmail.com
+ *
+ * @param <ID>
+ */
 public abstract class SkillsEntity<ID> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public abstract ID getId();
+	protected abstract ID getId();
 
-	public abstract void setId(ID id);
+	protected abstract void setId(ID id);
 
 	@Override
 	public int hashCode() {

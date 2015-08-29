@@ -7,7 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Corretora extends SkillsEntity<Long> {
 
 	private static final long serialVersionUID = 1L;
@@ -17,6 +24,8 @@ public class Corretora extends SkillsEntity<Long> {
 	private Long id;
 	private String nome;
 	private String codigo;
+	
+	@JsonManagedReference
 	private List<AcaoCorretora> acoes;
 
 	public Long getId() {

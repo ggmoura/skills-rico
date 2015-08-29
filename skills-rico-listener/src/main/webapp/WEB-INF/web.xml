@@ -5,22 +5,11 @@
 	id="WebApp_ID" version="3.0">
 
 	<display-name>skills-rico-listen</display-name>
-
-	<!-- Auto scan REST service -->
-	<context-param>
-		<param-name>javax.ws.rs.core.Application</param-name>
-		<param-value>br.com.skills.ricointegration.rest.SkillsApplication</param-value>
-	</context-param>
-
-	<!-- this need same with resteasy servlet url-pattern -->
+	
 	<context-param>
 		<param-name>resteasy.servlet.mapping.prefix</param-name>
 		<param-value>/rest</param-value>
 	</context-param>
-
-	<listener>
-		<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
-	</listener>
 
 	<servlet>
 		<servlet-name>resteasy-servlet</servlet-name>
@@ -32,5 +21,13 @@
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
+	<context-param>
+		<param-name>javax.ws.rs.core.Application</param-name>
+		<param-value>br.com.skills.ricointegration.rest.SkillsApplication</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+	</listener>
 
 </web-app>

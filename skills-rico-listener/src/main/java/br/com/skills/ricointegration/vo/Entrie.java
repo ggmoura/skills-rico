@@ -1,8 +1,5 @@
 package br.com.skills.ricointegration.vo;
 
-import javax.persistence.Entity;
-
-@Entity
 public class Entrie {
 
 	private String id;
