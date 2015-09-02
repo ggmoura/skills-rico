@@ -11,11 +11,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import br.com.skills.ricointegration.entity.Acao;
-import br.com.skills.ricointegration.entity.AcaoCorretora;
+import br.com.skills.ricointegration.entity.Papel;
+import br.com.skills.ricointegration.entity.PapelCorretora;
 import br.com.skills.ricointegration.entity.Corretora;
 import br.com.skills.ricointegration.entity.PrecoMedio;
-import br.com.skills.ricointegration.vo.AcaoVO;
+import br.com.skills.ricointegration.vo.PapelVO;
 import br.com.skills.ricointegration.vo.CorretoraVO;
 import br.com.skills.ricointegration.vo.Entrie;
 import br.com.skills.ricointegration.vo.Resume;
@@ -31,9 +31,9 @@ public class SkillsSercice {
 	@GET
 	@Path("/acoes")
 	@Produces("application/json")
-	public AcaoVO getAcoes() {
+	public PapelVO getAcoes() {
 		
-		AcaoVO acao = new AcaoVO();
+		PapelVO acao = new PapelVO();
 		
 		acao.setP("ABCB4");
 		acao.setUt(new Date());
@@ -62,21 +62,21 @@ public class SkillsSercice {
 		c.setId(1L);
 		c.setNome("Corretora");
 		
-		Acao a = new Acao();
+		Papel a = new Papel();
 		a.setCode("Cod Acao");
 		a.setId(2L);
 		a.setName("Acao");
 		
-		List<AcaoCorretora> acoesCorretoras = new ArrayList<>();
-		AcaoCorretora acaoCorretora = new AcaoCorretora();
+		List<PapelCorretora> acoesCorretoras = new ArrayList<>();
+		PapelCorretora acaoCorretora = new PapelCorretora();
 		acaoCorretora.setId(3L);
-		acaoCorretora.setAcao(a);
-		a.setAcoes(acoesCorretoras);
+		acaoCorretora.setPapel(a);
+		a.setCorretoras(acoesCorretoras);
 		//acaoCorretora.setCorretora(c);
 		
 		acoesCorretoras.add(acaoCorretora);
 		
-		c.setAcoes(acoesCorretoras);
+		c.setPapeis(acoesCorretoras);
 		
 		List<PrecoMedio> precosMedios = new ArrayList<>();
 		PrecoMedio precoMedio = new PrecoMedio();

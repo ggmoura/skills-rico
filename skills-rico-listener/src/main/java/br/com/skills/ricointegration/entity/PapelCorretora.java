@@ -2,6 +2,7 @@ package br.com.skills.ricointegration.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,30 +11,22 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-
-import org.codehaus.jackson.annotate.JsonBackReference;
-import org.codehaus.jackson.annotate.JsonManagedReference;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-
 @Entity
-public class AcaoCorretora extends SkillsEntity<Long> {
+public class PapelCorretora extends SkillsEntity<Long> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	private Acao acao;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private Papel papel;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Corretora corretora;
 
-	@OneToMany(mappedBy="acaoCorretora")
+	@OneToMany(mappedBy = "papelCorretora", cascade = CascadeType.PERSIST)
 	private List<PrecoMedio> precosMedios;
 
 	public Long getId() {
@@ -44,12 +37,12 @@ public class AcaoCorretora extends SkillsEntity<Long> {
 		this.id = id;
 	}
 
-	public Acao getAcao() {
-		return acao;
+	public Papel getPapel() {
+		return papel;
 	}
 
-	public void setAcao(Acao acao) {
-		this.acao = acao;
+	public void setPapel(Papel papel) {
+		this.papel = papel;
 	}
 
 	public Corretora getCorretora() {

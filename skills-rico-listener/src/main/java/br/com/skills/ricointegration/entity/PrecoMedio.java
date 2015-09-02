@@ -17,7 +17,7 @@ public class PrecoMedio extends SkillsEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private Double compra;
@@ -25,7 +25,7 @@ public class PrecoMedio extends SkillsEntity<Long> {
 	private Double venda;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	private AcaoCorretora acaoCorretora;
+	private PapelCorretora papelCorretora;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAconpanhamento;
@@ -54,12 +54,12 @@ public class PrecoMedio extends SkillsEntity<Long> {
 		this.venda = venda;
 	}
 
-	public AcaoCorretora getAcaoCorretora() {
-		return acaoCorretora;
+	public PapelCorretora getPapelCorretora() {
+		return papelCorretora;
 	}
 
-	public void setAcaoCorretora(AcaoCorretora acaoCorretora) {
-		this.acaoCorretora = acaoCorretora;
+	public void setPapelCorretora(PapelCorretora papelCorretora) {
+		this.papelCorretora = papelCorretora;
 	}
 
 	public Date getDataAconpanhamento() {

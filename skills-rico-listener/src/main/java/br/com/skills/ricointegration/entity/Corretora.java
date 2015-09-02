@@ -2,12 +2,12 @@ package br.com.skills.ricointegration.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
 
 @Entity
 public class Corretora extends SkillsEntity<Long> {
@@ -15,13 +15,13 @@ public class Corretora extends SkillsEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
 	private String codigo;
-	
-	@OneToMany(mappedBy="corretora")
-	private List<AcaoCorretora> acoes;
+
+	@OneToMany(mappedBy = "corretora", cascade = CascadeType.PERSIST)
+	private List<PapelCorretora> papeis;
 
 	public Long getId() {
 		return id;
@@ -47,12 +47,12 @@ public class Corretora extends SkillsEntity<Long> {
 		this.codigo = codigo;
 	}
 
-	public List<AcaoCorretora> getAcoes() {
-		return acoes;
+	public List<PapelCorretora> getPapeis() {
+		return papeis;
 	}
 
-	public void setAcoes(List<AcaoCorretora> acoes) {
-		this.acoes = acoes;
+	public void setPapeis(List<PapelCorretora> papeis) {
+		this.papeis = papeis;
 	}
 
 }

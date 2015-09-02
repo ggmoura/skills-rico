@@ -3,7 +3,7 @@ package br.com.skills.ricointegration.vo;
 import java.util.Date;
 import java.util.List;
 
-public class AcaoVO {
+public class PapelVO {
 
 	private String p;
 
