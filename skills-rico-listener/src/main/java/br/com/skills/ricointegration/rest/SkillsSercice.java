@@ -1,4 +1,4 @@
-package br.com.skills.ricointegration.service;
+package br.com.skills.ricointegration.rest;
 
 import java.util.ArrayList;
 import java.util.Date;

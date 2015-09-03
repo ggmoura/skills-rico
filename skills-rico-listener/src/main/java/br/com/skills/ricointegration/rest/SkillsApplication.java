@@ -5,9 +5,6 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import br.com.skills.ricointegration.service.SkillsFileUploadService;
-import br.com.skills.ricointegration.service.SkillsSercice;
-
 
 public class SkillsApplication extends Application {
 
@@ -15,7 +12,7 @@ public class SkillsApplication extends Application {
 	
 	public SkillsApplication() {
 		singletons.add(new SkillsSercice());
-		singletons.add(new SkillsFileUploadService());
+		singletons.add(new SkillsIOEndpoint());
 	}
 	
 	@Override

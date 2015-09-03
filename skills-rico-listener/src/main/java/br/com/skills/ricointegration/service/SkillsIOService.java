@@ -11,6 +11,8 @@ import javax.persistence.Query;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.mysql.fabric.xmlrpc.base.Data;
+
 import br.com.skills.ricointegration.entity.Corretora;
 import br.com.skills.ricointegration.entity.Papel;
 import br.com.skills.ricointegration.entity.PapelCorretora;
@@ -18,11 +20,11 @@ import br.com.skills.ricointegration.entity.PrecoMedio;
 import br.com.skills.ricointegration.vo.CorretoraVO;
 import br.com.skills.ricointegration.vo.PapelVO;
 
-public class BuideData implements Runnable {
+public class SkillsIOService implements Runnable {
 
 	private EntityManager entityManager;
 
-	public BuideData() {
+	public SkillsIOService() {
 		entityManager = Persistence.createEntityManagerFactory("skills-rico").createEntityManager();
 	}
 	
@@ -126,6 +128,13 @@ public class BuideData implements Runnable {
 			entityManager.getTransaction().commit();
 		}
 		return c;
+	}
+	
+	@SuppressWarnings({ "unused", "unchecked" })
+	public List<Papel> recuperarPapeis(Data dataImportacao) {
+		Query q = entityManager.createQuery("select new PrecoMedio(pm.compra, pm.venda, pm.papelCorretora.corretora.codigo, pm.papelCorretora.papel.code, pm.dataAconpanhamento) from PrecoMedio pm");
+		List<PapelCorretora> pc = q.getResultList();
+		return null;
 	}
 	
 	

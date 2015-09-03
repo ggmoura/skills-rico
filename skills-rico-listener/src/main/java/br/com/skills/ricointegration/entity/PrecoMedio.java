@@ -30,6 +30,22 @@ public class PrecoMedio extends SkillsEntity<Long> {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAconpanhamento;
 
+	public PrecoMedio() {
+		super();
+	}
+
+	public PrecoMedio(Double compra, Double venda, String codigoCorretora, String codePapel, Date dataAconpanhamento) {
+		super();
+		this.compra = compra;
+		this.venda = venda;
+		this.papelCorretora = new PapelCorretora();
+		this.papelCorretora.setCorretora(new Corretora());
+		this.papelCorretora.getCorretora().setCodigo(codigoCorretora);
+		this.papelCorretora.setPapel(new Papel());
+		this.papelCorretora.getPapel().setCode(codePapel);
+		this.dataAconpanhamento = dataAconpanhamento;
+	}
+
 	public Long getId() {
 		return id;
 	}
