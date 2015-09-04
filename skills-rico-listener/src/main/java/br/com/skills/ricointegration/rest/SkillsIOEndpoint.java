@@ -1,12 +1,15 @@
 package br.com.skills.ricointegration.rest;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +30,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.mysql.fabric.xmlrpc.base.Data;
 
-import br.com.skills.ricointegration.entity.Papel;
+import br.com.skills.ricointegration.entity.PrecoMedio;
 import br.com.skills.ricointegration.service.SkillsIOService;
 
 @Path("/files")
@@ -37,7 +40,7 @@ public class SkillsIOEndpoint {
 
 	@Context
 	private ServletContext context;
-	
+
 	@POST
 	@Path("/upload")
 	@Consumes("multipart/form-data")
@@ -49,8 +52,7 @@ public class SkillsIOEndpoint {
 
 		List<InputPart> inPart = formParts.get("file");
 		List<String> papeis = new ArrayList<>();
-		
-		
+
 		for (InputPart inputPart : inPart) {
 			try {
 				// Retrieve headers, read the Content-Disposition header to
@@ -73,7 +75,7 @@ public class SkillsIOEndpoint {
 				e.printStackTrace();
 			}
 		}
-		
+
 		SkillsIOService buideData = new SkillsIOService();
 		buideData.setPapeis(papeis);
 		Thread exectute = new Thread(buideData);
@@ -114,29 +116,51 @@ public class SkillsIOEndpoint {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@GET
 	@Path("/script")
 	@Produces("text/plain")
-	public Response getFile() {
-
-		InputStream is = SkillsIOEndpoint.class.getResourceAsStream("/script-skills-rico.sql");
-
-		StringBuilder tabela = new StringBuilder("CREATE TABLE [CONSOL_#{PAPEL}] (\n\t");
-		tabela.append("[ID] INT, [CORRETORA] NUMERIC(18, 0),\n\t[COMPROU] NUMERIC(18, 0), [VENDEU] NUMERIC(18, 0),\n\t");
-		tabela.append("[DATA DA LEITURA] DATETIME, [ACUMULAÇÃO] NUMERIC(18, 0))");
-		
+	public Response getFile() throws IOException {	
 		StringBuilder script = new StringBuilder();
+		
 		SkillsIOService service = new SkillsIOService();
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		List<PrecoMedio> precos = service.recuperarPapeis(new Data());
+		StringBuilder insert = null;
+		List<String> papeis = new ArrayList<>();
+		String codePapel = null;
 		
-		List<Papel> precos = service.recuperarPapeis(new Data());
+		for (PrecoMedio papel : precos) {
+			codePapel = papel.getPapelCorretora().getPapel().getCode();
+			if (!papeis.contains(codePapel)) {
+				script.append("DELETE FROM CONSOL_").append(codePapel).append(";\n");				
+			}
+			papeis.add(codePapel);
+		}
+		
+		script.append("\n\n\n");
 		
 		
-		ResponseBuilder response = Response.ok((Object) is);
+		
+		for (PrecoMedio precoMedio : precos) {
+			insert = new StringBuilder();
+			insert.append("INSERT INTO [BolsaAnalise].[dbo].[CONSOL_");
+			insert.append(precoMedio.getPapelCorretora().getPapel().getCode()).append("] ([ID], [CORRETORA], ");
+			insert.append("[COMPROU], [VENDEU], [DATA DA LEITURA] ,[ACUMULAÇÃO]) VALUES ( ");
+			insert.append(precoMedio.getId()).append(", ");
+			insert.append(precoMedio.getPapelCorretora().getCorretora().getCodigo()).append(", ");
+			insert.append(precoMedio.getCompra()).append(", ");
+			insert.append(precoMedio.getVenda()).append(", ");
+			insert.append("'").append(df.format(precoMedio.getDataAconpanhamento())).append("', ");
+			insert.append("null").append(");\n");
+			script.append(insert);
+		}
+		
+		byte[] stringByte = script.toString().getBytes();
+	    ByteArrayOutputStream bos = new ByteArrayOutputStream(script.length());
+	    bos.write(stringByte);
+		ResponseBuilder response = Response.ok((Object) bos);
 		response.header("Content-Disposition", "attachment; filename=\"script.sql\"");
 		return response.build();
-
 	}
-	
-	
 }

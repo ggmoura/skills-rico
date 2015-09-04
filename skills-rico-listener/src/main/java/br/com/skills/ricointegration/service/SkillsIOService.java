@@ -47,6 +47,14 @@ public class SkillsIOService implements Runnable {
 	private void criarAcao(String jsonStr) {
 		PapelVO papelVO = null;
 		ObjectMapper mapper = new ObjectMapper();
+		
+		entityManager.getTransaction().begin();
+		entityManager.createQuery("DELET FROM PAPEL").executeUpdate();
+		entityManager.createQuery("DELET FROM PAPEL_CORRETORA").executeUpdate();
+		entityManager.createQuery("DELET FROM CORRETORA").executeUpdate();
+		entityManager.createQuery("DELET FROM PRECO_MEDIO").executeUpdate();
+		entityManager.getTransaction().commit();
+		
 		try {
 			mapper.readValue(jsonStr, PapelVO.class);
 			papelVO = mapper.readValue(jsonStr, PapelVO.class);
@@ -71,6 +79,8 @@ public class SkillsIOService implements Runnable {
 					pc.getPrecosMedios().add(precoMedio);
 					p.getCorretoras().add(pc);
 				}
+			} else {
+				recuperarPapel(papelVO.getP());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -130,12 +140,46 @@ public class SkillsIOService implements Runnable {
 		return c;
 	}
 	
-	@SuppressWarnings({ "unused", "unchecked" })
-	public List<Papel> recuperarPapeis(Data dataImportacao) {
-		Query q = entityManager.createQuery("select new PrecoMedio(pm.compra, pm.venda, pm.papelCorretora.corretora.codigo, pm.papelCorretora.papel.code, pm.dataAconpanhamento) from PrecoMedio pm");
-		List<PapelCorretora> pc = q.getResultList();
-		return null;
+	@SuppressWarnings({ "unchecked" })
+	public List<PrecoMedio> recuperarPapeis(Data dataImportacao) {
+		Query q = entityManager.createQuery("select new PrecoMedio(pm.id, pm.compra, pm.venda, pm.papelCorretora.corretora.codigo, pm.papelCorretora.papel.code, pm.dataAconpanhamento) from PrecoMedio pm");
+		List<PrecoMedio> pc = q.getResultList();
+		return pc;
 	}
+
 	
-	
+//	@SuppressWarnings({ "unchecked" })
+//	public List<Papel> recuperarPapeis(Data dataImportacao) {
+//		Query q = entityManager.createQuery("select new PrecoMedio(pm.compra, pm.venda, pm.papelCorretora.corretora.codigo, pm.papelCorretora.papel.code, pm.dataAconpanhamento) from PrecoMedio pm");
+//		List<PrecoMedio> pc = q.getResultList();
+//		Map<String, Papel> papeis = new HashMap<>();
+//		Papel papel = null;
+//		Corretora corretora = null;
+//		PapelCorretora papelCorretora = null;
+//		String codePapel = null;
+//		ArrayList<PapelCorretora> papeisCorretoras = null;
+//		for (PrecoMedio precoMedio : pc) {
+//			codePapel = precoMedio.getPapelCorretora().getPapel().getCode();
+//			if (!papeis.containsKey(codePapel)) {
+//				papel = new Papel();
+//				papel.setCode(codePapel);
+//				papeisCorretoras = new ArrayList<PapelCorretora>();
+//				papelCorretora = new PapelCorretora();
+//				papelCorretora.setCorretora(corretora);
+//				papelCorretora.setPapel(papel);
+//				papelCorretora.setPrecosMedios(new ArrayList<PrecoMedio>());
+//				papeisCorretoras.add(papelCorretora);
+//				papel.setCorretoras(papeisCorretoras);
+//				corretora = new Corretora();
+//				corretora.setPapeis(papeisCorretoras);				
+//				corretora.setPapeis(papeisCorretoras);
+//				papeis.put(codePapel, papel);
+//			}
+//			papel = papeis.get(codePapel);
+//			papel.getCorretoras().get(papel.getCorretoras().indexOf(precoMedio.getPapelCorretora())).getPrecosMedios().add(precoMedio);
+//			papel.getCorretoras();
+//		}
+//		return new ArrayList<Papel>(papeis.values());
+//	}
+
 }

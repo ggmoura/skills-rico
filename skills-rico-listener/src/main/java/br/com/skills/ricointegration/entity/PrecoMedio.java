@@ -1,5 +1,6 @@
 package br.com.skills.ricointegration.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -34,15 +35,27 @@ public class PrecoMedio extends SkillsEntity<Long> {
 		super();
 	}
 
-	public PrecoMedio(Double compra, Double venda, String codigoCorretora, String codePapel, Date dataAconpanhamento) {
+	public PrecoMedio(Long id, Double compra, Double venda, String codigoCorretora, String codePapel, Date dataAconpanhamento) {
 		super();
+		this.id = id;
 		this.compra = compra;
 		this.venda = venda;
+		
 		this.papelCorretora = new PapelCorretora();
-		this.papelCorretora.setCorretora(new Corretora());
-		this.papelCorretora.getCorretora().setCodigo(codigoCorretora);
-		this.papelCorretora.setPapel(new Papel());
-		this.papelCorretora.getPapel().setCode(codePapel);
+		Corretora corretora = new Corretora();
+		corretora.setCodigo(codigoCorretora);
+		this.papelCorretora.setCorretora(corretora);
+		
+		Papel papel = new Papel();
+		papel.setCode(codePapel);
+		this.papelCorretora.setPapel(papel);
+		
+		ArrayList<PapelCorretora> papeisCorretoras = new ArrayList<PapelCorretora>();
+		papeisCorretoras.add(papelCorretora);
+		
+		corretora.setPapeis(papeisCorretoras);
+		papel.setCorretoras(papeisCorretoras);
+		
 		this.dataAconpanhamento = dataAconpanhamento;
 	}
 

@@ -61,4 +61,35 @@ public class PapelCorretora extends SkillsEntity<Long> {
 		this.precosMedios = precosMedios;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((corretora == null) ? 0 : corretora.hashCode());
+		result = prime * result + ((papel == null) ? 0 : papel.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PapelCorretora other = (PapelCorretora) obj;
+		if (corretora == null) {
+			if (other.corretora != null)
+				return false;
+		} else if (!corretora.equals(other.corretora))
+			return false;
+		if (papel == null) {
+			if (other.papel != null)
+				return false;
+		} else if (!papel.equals(other.papel))
+			return false;
+		return true;
+	}
+
 }
